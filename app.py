@@ -14,22 +14,8 @@ def is_sql_question(question):
     return any(word.lower() in question.lower() for word in keywords)
 
 def generate_sql(question):
-    print(f"🧠 Question reçue : {question}")
-    endpoint = "https://api-inference.huggingface.co/models/defog/sqlcoder-7b"
-    headers = {
-        "Authorization": f"Bearer {os.environ.get('HUGGINGFACEHUB_API_TOKEN', 'MISSING_TOKEN')}",
-        "Content-Type": "application/json"
-    }
-    data = {"inputs": question}
+    return "SELECT COUNT(*) FROM produits WHERE prix > 100;"
 
-    try:
-        response = requests.post(endpoint, headers=headers, json=data)
-        print(f"📡 Code réponse HuggingFace : {response.status_code}")
-        print(f"📦 Contenu : {response.text}")
-        return response.json()[0]["generated_text"]
-    except Exception as e:
-        print(f"❌ Erreur lors de l'appel HF : {e}")
-        return None
 
 
 def execute_sql(sql):
