@@ -14,7 +14,7 @@ def is_sql_question(question):
     return any(word.lower() in question.lower() for word in keywords)
 
 def generate_sql(question):
-    return "SELECT COUNT(*) FROM produits WHERE prix > 100;"
+    return "SELECT COUNT(*) FROM total_vente WHERE total_vente > 100;"
 
 
 
