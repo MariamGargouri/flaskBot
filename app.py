@@ -17,7 +17,7 @@ def is_sql_question(question):
     return any(word.lower() in question.lower() for word in keywords)
 
 def generate_sql(question):
-    endpoint = "https://api-inference.huggingface.co/models/defog/sqlcoder-7b"
+    endpoint = "https://api-inference.huggingface.co/models/defog/sqlcoder-7b-2"
     headers = {
         "Authorization": f"Bearer {os.environ['HUGGINGFACEHUB_API_TOKEN']}",
         "Content-Type": "application/json"
