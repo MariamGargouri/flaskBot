@@ -14,7 +14,18 @@ def is_sql_question(question):
     return any(word.lower() in question.lower() for word in keywords)
 
 def generate_sql(question):
-    return "SELECT COUNT(*) FROM produit WHERE prix_vente > 100;"
+    endpoint = "https://api-inference.huggingface.co/models/defog/sqlcoder-7b"
+    headers = {
+        "Authorization": f"Bearer {os.environ['HUGGINGFACEHUB_API_TOKEN']}",
+        "Content-Type": "application/json"
+    }
+    data = {"inputs": f"{question}"}
+    response = requests.post(endpoint, headers=headers, json=data)
+
+    try:
+        return response.json()[0]["generated_text"]
+    except Exception:
+        return None
 
 
 
