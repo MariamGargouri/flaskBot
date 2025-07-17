@@ -173,7 +173,7 @@ def ask():
         # Utilise la fonction pour appeler Gemini
         sql = call_gemini_api(question, table_header_schema_global)
 
-        if sql:
+        if sql: # Cette ligne est correctement indentée.
             result = execute_sql(sql)
             logging.info(f"SQL exécuté, résultat: {result}")
         else:
