@@ -81,7 +81,7 @@ def ask():
 
     if is_sql_question(question):
         sql = generate_sql(question)
-        If sql:
+        if sql:
             result = execute_sql(sql)
             logging.info(f"SQL exécuté, résultat: {result}")
         else:
