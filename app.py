@@ -21,6 +21,9 @@ def parse_metadata_sql(metadata_file="metadata.sql"):
     try:
         with open(metadata_file, "r") as f:
             content = f.read()
+        if not content.strip(): # Ajout d'une vérification si le fichier est vide après lecture
+            logging.warning(f"Le fichier {metadata_file} est vide ou ne contient que des espaces blancs.")
+            return ""
         logging.info("Schéma de la base de données parsé avec succès depuis metadata.sql.")
         return content
     except FileNotFoundError:
@@ -29,6 +32,14 @@ def parse_metadata_sql(metadata_file="metadata.sql"):
     except Exception as e:
         logging.error(f"Erreur lors de l'analyse de metadata.sql: {e}", exc_info=True)
         return ""
+
+# --- DÉPLACER L'INITIALISATION ICI ---
+# Parse metadata.sql une seule fois au démarrage du module, quel que soit le mode d'exécution.
+table_header_schema_global = parse_metadata_sql()
+if not table_header_schema_global:
+    logging.error("Échec du chargement du schéma de la base de données au démarrage. L'API Gemini ne pourra pas générer de SQL.")
+# --- FIN DU DÉPLACEMENT ---
+
 
 def call_gemini_api(question, table_metadata_string):
     """
@@ -182,9 +193,8 @@ def ask():
         })
 
 if __name__ == "__main__":
-    # Parse metadata.sql une seule fois au démarrage de l'application
-    table_header_schema_global = parse_metadata_sql()
-    if not table_header_schema_global:
-        logging.error("Échec du chargement du schéma de la base de données au démarrage. L'API Gemini ne pourra pas générer de SQL.")
+    # Ce bloc n'est plus nécessaire pour initialiser table_header_schema_global
+    # car cela est fait au niveau du module.
+    # Il est conservé pour l'exécution locale si debug=True.
     app.run(debug=True)
 
